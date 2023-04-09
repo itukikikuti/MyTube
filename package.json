@@ -1,0 +1,50 @@
+{
+  "name": "mytube",
+  "version": "1.0.0",
+  "description": "MyTube",
+  "author": "itukikikuti",
+  "main": "dist/main.js",
+  "scripts": {
+    "start": "cross-env NODE_OPTIONS='--openssl-legacy-provider' NODE_ENV=development webpack --progress && electron .",
+    "build": "cross-env NODE_OPTIONS='--openssl-legacy-provider' NODE_ENV=production webpack --progress && electron-packager . MyTube --platform=win32 --arch=x64 --overwrite"
+  },
+  "dependencies": {
+    "nedb": "^1.8.0",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-redux": "^7.2.4",
+    "ress": "^4.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.2",
+    "@babel/preset-react": "^7.13.13",
+    "@types/nedb": "^1.8.11",
+    "babel-loader": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.2.4",
+    "electron": "^10.4.6",
+    "electron-packager": "^15.2.0",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.6.0",
+    "sass": "^1.32.13",
+    "sass-loader": "^11.1.1",
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ],
+      [
+        "@babel/react"
+      ]
+    ]
+  }
+}
