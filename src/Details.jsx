@@ -1,7 +1,7 @@
 import { exec } from "child_process"
 import React, { useState, useEffect } from "react"
 import ReactDOM from "react-dom"
-import { useDispatch, useSelector, shallowEqual } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import History from "./History"
 
 export default function Details(props) {

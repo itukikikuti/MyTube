@@ -1,3 +1,4 @@
+import fs from "fs"
 import NEDB from "nedb"
 
 class Database {
@@ -62,6 +63,8 @@ class Database {
     }
 }
 
-export const mediaDB = new Database("data/media.db")
-export const tagDB = new Database("data/tag.db")
-export const historyDB = new Database("data/history.db")
+const path = fs.readFileSync("./config.dat");
+
+export const mediaDB = new Database(`${path}/data/media.db`)
+export const tagDB = new Database(`${path}/data/tag.db`)
+export const historyDB = new Database(`${path}/data/history.db`)

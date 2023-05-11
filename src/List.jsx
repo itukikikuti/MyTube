@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import React, { useState, useEffect } from "react"
-import { useDispatch, useSelector, shallowEqual, useStore } from "react-redux"
+import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import Item from "./Item"
 import Media from "./Media"
 import History from "./History"

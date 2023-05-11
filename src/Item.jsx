@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { useSelector, shallowEqual } from "react-redux"
+import { useSelector } from "react-redux"
 import Details from "./Details"
 
 export default React.memo(function Item(props) {
