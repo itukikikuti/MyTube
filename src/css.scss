@@ -2,6 +2,10 @@
     @return $depth / 2 $depth / 2 $depth #b1b1b1, $depth / -2 $depth / -2 $depth #ffffff;
 }
 
+@function dropshadow($depth: 6px) {
+    @return $depth / 2 $depth / 2 $depth rgba(0, 0, 0, 0.2);
+}
+
 .overlay {
     position: fixed;
     top: 0;
@@ -180,7 +184,7 @@ body {
     width: 90%;
     margin: 50px auto;
     background-color: #e0e0e0;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
+    box-shadow: dropshadow(10px);
     border-radius: 16px;
     overflow: hidden;
 
@@ -192,8 +196,10 @@ body {
     
         &.close {
             position: fixed;
-            top: 0;
+            top: 30px;
             right: 0;
+            background-color: #e0e0e0;
+            box-shadow: dropshadow(10px);
         }
     }
 

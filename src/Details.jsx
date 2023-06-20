@@ -155,7 +155,7 @@ export default function Details(props) {
         ReactDOM.createPortal(
             <div className="overlay" onClick={onClickOverlay}>
                 <div className="details">
-                    <button className="close" onClick={props.onClose}>close</button>
+                    <button className="close" onClick={props.onClose}>×</button>
                     <div className="media">
                         {isVideo ? <video src={media.path} controls ref={videoRef} /> : <img src={media.path} />}
                     </div>
