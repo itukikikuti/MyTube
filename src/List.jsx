@@ -193,6 +193,16 @@ export default function List(props) {
     console.log(mediaList)
 
     return <>
+        <nav className="menu">
+            <ul>
+                <li>
+                    <button>編集</button>
+                    <ul>
+                        <li><button>タイトル変更</button></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
         <div className="filter">
             <ul>
                 <li><label><input type="checkbox" checked={rateFlags.includes(5)} onChange={() => setRateFlag(5)} /><div className="rating" data-rate="5" /></label></li>
