@@ -12,6 +12,7 @@ export default function List(props) {
     const [tagFlags, setTagFlags] = useState([])
     const [thumbFlags, setThumbFlags] = useState([false, false])
     const [sort, setSort] = useState("date")
+    const [tagMode, setTagMode] = useState("filter")
 
     const medias = useSelector(state => state.medias, shallowEqual)
     const mediaList = useSelector(state => state.mediaList, shallowEqual)
@@ -68,6 +69,7 @@ export default function List(props) {
         const findRates = rateFlags
         const findTypes = typeFlags
         const findTags = tagFlags.filter(flag => flag.flag).map(flag => flag.tag)
+        const ignore = tagMode === "ignore"
 
         const _medias = medias.filter(media => {
             if (!findRates.includes(media.rate)) {
@@ -78,10 +80,13 @@ export default function List(props) {
                 return false
             }
 
-            if (thumbFlags[0] !== thumbFlags[1] &&
-                ((thumbFlags[0] && media.thumbs.length === 0) ||
-                (thumbFlags[1] && media.thumbs.length > 0))) {
-                return false
+            if (thumbFlags[0] !== thumbFlags[1]) {
+                if (thumbFlags[0] && (media.thumbs.length === 0) === !ignore) {
+                    return false
+                }
+                if (thumbFlags[1] && (media.thumbs.length > 0) === !ignore) {
+                    return false
+                }
             }
 
             if (findTags.length === 0) {
@@ -90,11 +95,11 @@ export default function List(props) {
 
             for (const tag of media.tags) {
                 if (findTags.includes(tag)) {
-                    return true
+                    return !ignore
                 }
             }
 
-            return false
+            return ignore
         })
 
         const hash = {}
@@ -221,6 +226,10 @@ export default function List(props) {
                 <label className="tag" key="サムネあり"><input type="checkbox" checked={thumbFlags[0]} onChange={() => setThumbFlag(0, !thumbFlags[0])} />サムネあり</label>
                 <label className="tag" key="サムネなし"><input type="checkbox" checked={thumbFlags[1]} onChange={() => setThumbFlag(1, !thumbFlags[1])} />サムネなし</label>
                 {tagFlags.map(tagFlag => <label className="tag" key={tagFlag.tag}><input type="checkbox" checked={tagFlag.flag} onChange={() => setTagFlag(tagFlag)} />{tagFlag.tag}</label>)}
+                <select value={tagMode} onChange={e => setTagMode(e.target.value)}>
+                    <option value="filter">含む</option>
+                    <option value="ignore">除く</option>
+                </select>
             </div>
             <div>
                 <select value={sort} onChange={e => setSort(e.target.value)}>
