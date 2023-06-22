@@ -43,6 +43,10 @@ function reducer(state, action) {
             historyDB.add(action.history)
             state.histories = [...state.histories, action.history]
             break
+            
+        case "currentMedia":
+            state.current = action.title
+            break
     }
     return { ...state }
 }
@@ -75,6 +79,7 @@ async function init() {
         mediaList: [],
         tags: await tagDB.find({}),
         histories: await historyDB.find({}),
+        current: null,
     }
 
 
