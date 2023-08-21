@@ -1,13 +1,16 @@
 import { exec } from "child_process"
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef, useCallback } from "react"
 import ReactDOM from "react-dom"
 import { useDispatch, useSelector } from "react-redux"
 import History from "./History"
 
 export default function Details(props) {
+    const [loopBegin, setLoopBegin] = useState(0)
+    const [loopEnd, setLoopEnd] = useState(0)
     const [inputTag, setInputTag] = useState("")
 
-    const videoRef = React.createRef()
+    const videoRef = useRef()
+    const setVideoRef = useCallback(node => videoRef.current = node, [])
 
     const medias = useSelector(state => state.medias)
     const media = useSelector(state => state.medias.find(media => media.title === props.title))
@@ -143,6 +146,16 @@ export default function Details(props) {
         }
     }
 
+    const timeUpdate = () => {
+        if (videoRef.current.currentTime >= loopEnd) {
+            videoRef.current.currentTime = loopBegin
+        }
+    }
+
+    const initLoopEnd = () => {
+        setLoopEnd(videoRef.current.duration)
+    }
+
     useEffect(() => {
         document.addEventListener("keydown", handleKeyDown, false)
     }, [])
@@ -157,7 +170,7 @@ export default function Details(props) {
                 <div className="details">
                     <button className="close" onClick={props.onClose}>×</button>
                     <div className="media">
-                        {isVideo ? <video src={media.path} controls ref={videoRef} /> : <img src={media.path} />}
+                        {isVideo ? <video src={media.path} controls loop onTimeUpdate={timeUpdate} onLoadedData={initLoopEnd} ref={setVideoRef} /> : <img src={media.path} />}
                     </div>
                     <div className="info">
                         <p className="title">{media.title}</p>
@@ -171,6 +184,8 @@ export default function Details(props) {
                         {
                             isVideo && <>
                                 <button onClick={play}>play</button>
+                                <button onClick={() => setLoopBegin(videoRef.current.currentTime)}>{Math.floor(Math.floor(loopBegin) / 60).toString()}:{("00" + (Math.floor(loopBegin) % 60).toString()).slice(-2)}</button>
+                                <button onClick={() => setLoopEnd(videoRef.current.currentTime)}>{Math.floor(Math.floor(loopEnd) / 60).toString()}:{("00" + (Math.floor(loopEnd) % 60).toString()).slice(-2)}</button>
                                 <button onClick={addThumb}>add thumb</button>
                                 <label className="load"><input type="file" accept="image/*" onChange={loadThumb} />load thumb</label>
                                 {media.thumbs.map((thumb, i) => <button key={i} onClick={() => removeThumb(i)}><img style={{height:"50px"}} src={thumb} /></button>)}
