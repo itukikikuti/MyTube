@@ -14,7 +14,6 @@ export default function List(props) {
     const [thumbFlags, setThumbFlags] = useState([false, false])
     const [sort, setSort] = useState("date")
     const [tagMode, setTagMode] = useState("filter")
-    const [showChangeTitleDialog, setShowChangeTitleDialog] = useState(false)
 
     const medias = useSelector(state => state.medias, shallowEqual)
     const mediaList = useSelector(state => state.mediaList, shallowEqual)
@@ -205,7 +204,7 @@ export default function List(props) {
                 <li>
                     <button>編集</button>
                     <ul>
-                        <li><button onClick={() => setShowChangeTitleDialog(true)}>タイトル変更</button></li>
+                        <li><button onClick={() => ChangeTitleDialog()}>タイトル変更</button></li>
                     </ul>
                 </li>
             </ul>
@@ -246,6 +245,5 @@ export default function List(props) {
             <p>{mediaList.length}</p>
         </div>
         <div className="list">{mediaList.map(title => <Item title={title} key={title} />)}</div>
-        {showChangeTitleDialog && <ChangeTitleDialog onClose={setShowChangeTitleDialog(false)} />}
     </>
 }
