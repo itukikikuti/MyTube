@@ -44,7 +44,7 @@ const renderer = {
                 use: "babel-loader",
             },
             {
-                test: /\.s?css$/,
+                test: /\.css$/,
                 use: [
                     {
                         loader: MiniCSSExtractPlugin.loader,
@@ -52,10 +52,6 @@ const renderer = {
                     {
                         loader: "css-loader",
                         options: { sourceMap: isDev },
-                    },
-                    {
-                        loader: "sass-loader",
-                        options: { implementation: require("sass"), sourceMap: isDev },
                     },
                 ],
             },
