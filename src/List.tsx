@@ -117,7 +117,6 @@ export default function List(props: any) {
                     const temp = _medias[i]
                     _medias[i] = _medias[j]
                     _medias[j] = temp
-                    //[_medias[i], _medias[j]] = [_medias[j], _medias[i]]
                 }
                 break
 

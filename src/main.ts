@@ -17,10 +17,7 @@ function createWindow() {
     }))
 
     mainWindow.maximize()
-
-    // if (process.env.NODE_ENV === "development") {
-        mainWindow.webContents.openDevTools()
-    // }
+    mainWindow.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {

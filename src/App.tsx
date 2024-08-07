@@ -7,7 +7,6 @@ import { mediaDB, tagDB, historyDB } from "./Database"
 import List from "./List"
 import State from "./State"
 import Media from "./Media"
-import NEDB from "nedb"
 
 function reducer(state: any, action: any) {
     console.log(action)
@@ -58,22 +57,6 @@ function App() {
 }
 
 async function init() {
-    /*
-    const medias = await mediaDB.find({})
-
-    for (const media of medias) {
-        media.thumbs = []
-
-        console.log(media.thumb)
-        if (media.thumb !== "" && media.thumb !== "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAQQAOw==") {
-            media.thumbs.push(media.thumb)
-        }
-
-        media.thumb = undefined
-        mediaDB.update({ title: media.title }, media)
-    }
-    */
-
     const initialState: State = {
         medias: await mediaDB.find({}),
         mediaList: [],

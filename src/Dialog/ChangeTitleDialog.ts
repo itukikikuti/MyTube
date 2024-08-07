@@ -1,10 +1,4 @@
 export default function ChangeTitleDialog() {
-    // const onClickOverlay = e => {
-    //     if (e.currentTarget === e.target) {
-    //         //props.onClose()
-    //     }
-    // }
-
     const overlay = document.createElement("div")
     overlay.className = "overlay"
     overlay.onclick = e => {
