@@ -1,6 +1,6 @@
 import fs from "fs"
 import React from "react"
-import ReactDOM from "react-dom"
+import { createRoot } from "react-dom/client"
 import { createStore } from "redux"
 import { Provider } from "react-redux"
 import { mediaDB, tagDB, historyDB } from "./Database"
@@ -66,7 +66,8 @@ async function init() {
     }
 
     const store = createStore(reducer, initialState)
-    ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById("root"))
+    const root = createRoot(document.getElementById("root"))
+    root.render(<Provider store={store}><App /></Provider>)
 }
 
 init()
