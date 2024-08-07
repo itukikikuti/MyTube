@@ -1,6 +1,4 @@
 const path = require("path")
-const HTMLWebpackPlugin = require("html-webpack-plugin")
-const MiniCSSExtractPlugin = require("mini-css-extract-plugin")
 
 const isDev = process.env.NODE_ENV === "development"
 
@@ -43,30 +41,8 @@ const renderer = {
                 exclude: /node_modules/,
                 use: "babel-loader",
             },
-            {
-                test: /\.css$/,
-                use: [
-                    {
-                        loader: MiniCSSExtractPlugin.loader,
-                    },
-                    {
-                        loader: "css-loader",
-                        options: { sourceMap: isDev },
-                    },
-                ],
-            },
         ],
     },
-    plugins: [
-        new HTMLWebpackPlugin({
-            template: "./src/index.html",
-            filename: "index.html",
-            minify: !isDev,
-            inject: "body",
-            scriptLoading: "blocking",
-        }),
-        new MiniCSSExtractPlugin(),
-    ],
     devtool: isDev ? "inline-source-map" : false,
 }
 

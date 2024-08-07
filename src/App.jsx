@@ -5,8 +5,6 @@ import { createStore } from "redux"
 import { Provider } from "react-redux"
 import { mediaDB, tagDB, historyDB } from "./Database"
 import List from "./List"
-import "./ress.css"
-import "./css.css"
 
 function reducer(state, action) {
     console.log(action)

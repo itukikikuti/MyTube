@@ -5,8 +5,9 @@
   "author": "itukikikuti",
   "main": "dist/main.js",
   "scripts": {
-    "start": "cross-env NODE_OPTIONS='--openssl-legacy-provider' NODE_ENV=development webpack --progress && electron .",
-    "build": "cross-env NODE_OPTIONS='--openssl-legacy-provider' NODE_ENV=production webpack --progress && electron-packager . MyTube --platform=win32 --arch=x64 --overwrite"
+    "copy": "copy src\\index.html dist\\index.html && copy src\\css.css dist\\css.css && copy src\\ress.css dist\\ress.css",
+    "start": "cross-env NODE_OPTIONS='--openssl-legacy-provider' NODE_ENV=development webpack --progress && npm run copy && electron .",
+    "build": "cross-env NODE_OPTIONS='--openssl-legacy-provider' NODE_ENV=production webpack --progress && npm run copy && electron-packager . MyTube --platform=win32 --arch=x64 --overwrite"
   },
   "dependencies": {
     "nedb": "^1.8.0",
@@ -21,11 +22,8 @@
     "@types/nedb": "^1.8.11",
     "babel-loader": "^8.2.2",
     "cross-env": "^7.0.3",
-    "css-loader": "^5.2.4",
     "electron": "^31.3.1",
     "electron-packager": "^15.2.0",
-    "html-webpack-plugin": "^5.3.1",
-    "mini-css-extract-plugin": "^1.6.0",
     "webpack": "^5.37.1",
     "webpack-cli": "^4.7.0"
   },
