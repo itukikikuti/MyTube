@@ -7,7 +7,6 @@ import { mediaDB, tagDB, historyDB } from "./Database"
 import List from "./List"
 import "ress"
 import "./css.scss"
-import "./slick.scss"
 
 function reducer(state, action) {
     console.log(action)

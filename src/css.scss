@@ -1,9 +1,6 @@
-@function shadow($depth: 6px) {
-    @return $depth / 2 $depth / 2 $depth #b1b1b1, $depth / -2 $depth / -2 $depth #ffffff;
-}
-
-@function dropshadow($depth: 6px) {
-    @return $depth / 2 $depth / 2 $depth rgba(0, 0, 0, 0.2);
+:root {
+    --shadow: 4px 4px 8px #b1b1b1, -4px -4px 8px #ffffff;
+    --dropshadow: 5px 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .overlay {
@@ -82,7 +79,7 @@ body {
 
     ul {
         background: #e0e0e0;
-        box-shadow: dropshadow(10px);
+        box-shadow: var(--dropshadow);
     }
     
     li {
@@ -157,7 +154,7 @@ body {
     margin: 8px;
     overflow: hidden;
     border-radius: 16px;
-    box-shadow: shadow(10px);
+    box-shadow: var(--shadow);
     position: relative;
 
     .title {
@@ -229,14 +226,14 @@ body {
     width: 90%;
     margin: 50px auto;
     background-color: #e0e0e0;
-    box-shadow: dropshadow(10px);
+    box-shadow: var(--dropshadow);
     border-radius: 16px;
     overflow: hidden;
 
     button {
         padding: 5px 10px;
         margin: 8px;
-        box-shadow: shadow(8px);
+        box-shadow: var(--shadow);
         border-radius: 8px;
     
         &.close {
@@ -244,21 +241,21 @@ body {
             top: 30px;
             right: 0;
             background-color: #e0e0e0;
-            box-shadow: dropshadow(10px);
+            box-shadow: var(--dropshadow);
         }
     }
 
     input[type="text"] {
         padding: 5px;
         margin: 8px;
-        box-shadow: shadow(8px);
+        box-shadow: var(--shadow);
         border-radius: 8px;
     }
 
     .load {
         padding: 5px 10px;
         margin: 8px;
-        box-shadow: shadow(8px);
+        box-shadow: var(--shadow);
         border-radius: 8px;
         cursor: pointer;
 
@@ -306,7 +303,7 @@ body {
         label {
             color: #e0e0e0;
             font-size: 32px;
-            text-shadow: shadow(8px);
+            text-shadow: var(--shadow);
             cursor: pointer;
         }
 
