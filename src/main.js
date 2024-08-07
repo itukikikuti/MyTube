@@ -4,7 +4,10 @@ import {app, BrowserWindow, Menu} from "electron"
 
 function createWindow() {
     const mainWindow = new BrowserWindow({
-        webPreferences: { nodeIntegration: true }
+        webPreferences: {
+            nodeIntegration: true,
+            contextIsolation: false,
+        }
     })
 
     mainWindow.loadURL(url.format({
