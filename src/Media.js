@@ -1,6 +1,15 @@
 export default class Media
 {
-    constructor(title, path, date, type, rate, duration) {
+    title: string
+    path: string
+    date: Date
+    type: string
+    duration: number
+    rate: number
+    thumbs: string[]
+    tags: string[]
+    
+    constructor(title: string, path: string, date: Date, type: string, rate: number, duration: number) {
         this.title = title
         this.path = path
         this.date = date

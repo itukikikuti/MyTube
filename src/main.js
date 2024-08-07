@@ -1,6 +1,6 @@
 import path from "path"
 import url from "url"
-import {app, BrowserWindow, Menu} from "electron"
+import { app, BrowserWindow } from "electron"
 
 function createWindow() {
     const mainWindow = new BrowserWindow({

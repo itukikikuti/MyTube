@@ -1,30 +1,32 @@
 import { exec } from "child_process"
-import React, { useState, useEffect, useRef, useCallback } from "react"
+import React, { useState, useEffect, useRef, useCallback, MouseEvent, ChangeEvent } from "react"
 import ReactDOM from "react-dom"
 import { useDispatch, useSelector } from "react-redux"
 import History from "./History"
+import State from "./State"
+import Media from "./Media"
 
-export default function Details(props) {
+export default function Details(props: any) {
     const [loopBegin, setLoopBegin] = useState(0)
     const [loopEnd, setLoopEnd] = useState(0)
     const [inputTag, setInputTag] = useState("")
 
-    const videoRef = useRef()
-    const setVideoRef = useCallback(node => videoRef.current = node, [])
+    const videoRef = useRef<HTMLVideoElement>()
+    const setVideoRef = useCallback((node: HTMLVideoElement) => videoRef.current = node, [])
 
-    const medias = useSelector(state => state.medias)
-    const media = useSelector(state => state.medias.find(media => media.title === props.title))
-    const tags = useSelector(state => state.tags)
+    const medias = useSelector<State, Media[]>(state => state.medias)
+    const media = useSelector<State, Media>(state => state.medias.find((media: any) => media.title === props.title)!)
+    const tags = useSelector<State, { tag: string }[]>(state => state.tags)
 
     const dispatch = useDispatch()
 
-    const handleKeyDown = e => {
+    const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
             props.onClose()
         }
     }
 
-    const onClickOverlay = e => {
+    const onClickOverlay = (e: MouseEvent<HTMLDivElement>) => {
         if (e.currentTarget === e.target) {
             props.onClose()
         }
@@ -43,7 +45,7 @@ export default function Details(props) {
             return
         }
 
-        const video = videoRef.current
+        const video = videoRef.current!
         
         const canvas = document.createElement("canvas")
         canvas.width = (video.videoWidth / video.videoHeight) * 180
@@ -62,22 +64,22 @@ export default function Details(props) {
         dispatch({ type: "updateMedia", media: temp })
     }
 
-    const removeThumb = (i) => {
+    const removeThumb = (i: number) => {
         const temp = { ...media }
         temp.thumbs.splice(i, 1)
         dispatch({ type: "updateMedia", media: temp })
     }
 
-    const loadThumb = async e => {
-        if (e.target.files.length === 0) return
+    const loadThumb = async (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length === 0) return
 
         const reader = new FileReader()
-        reader.readAsDataURL(e.target.files[0])
+        reader.readAsDataURL(e.target.files![0])
 
         await waitEvent(reader, "load")
 
         const image = document.createElement("img")
-        image.src = reader.result
+        image.src = reader.result as string
 
         await waitEvent(image, "load")
 
@@ -98,14 +100,15 @@ export default function Details(props) {
         dispatch({ type: "updateMedia", media: temp })
     }
 
-    const waitEvent = (element, type) => {
+    const waitEvent = (element: EventTarget, type: string): Promise<void> => {
         return new Promise((resolve) => {
             element.addEventListener(type, () => { resolve() }, { once: true })
         })
     }
 
-    const setRate = (e, rate) => {
-        if (e.target.control.checked) {
+    const setRate = (e: MouseEvent<HTMLLabelElement>, rate: number) => {
+        const contol = e.currentTarget.control as HTMLInputElement
+        if (contol.checked) {
             rate = 0
         }
 
@@ -114,7 +117,7 @@ export default function Details(props) {
         dispatch({ type: "updateMedia", media: temp })
     }
 
-    const onChange = e => {
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
         setInputTag(e.target.value)
     }
 
@@ -133,7 +136,7 @@ export default function Details(props) {
         }
     }
 
-    const removeTag = tag => {
+    const removeTag = (tag: string) => {
         console.log("remove tag " + tag)
 
         const temp = { ...media }
@@ -147,13 +150,13 @@ export default function Details(props) {
     }
 
     const timeUpdate = () => {
-        if (videoRef.current.currentTime >= loopEnd) {
-            videoRef.current.currentTime = loopBegin
+        if (videoRef.current!.currentTime >= loopEnd) {
+            videoRef.current!.currentTime = loopBegin
         }
     }
 
     const initLoopEnd = () => {
-        setLoopEnd(videoRef.current.duration)
+        setLoopEnd(videoRef.current!.duration)
     }
 
     useEffect(() => {
@@ -184,8 +187,8 @@ export default function Details(props) {
                         {
                             isVideo && <>
                                 <button onClick={play}>play</button>
-                                <button onClick={() => setLoopBegin(videoRef.current.currentTime)}>{Math.floor(Math.floor(loopBegin) / 60).toString()}:{("00" + (Math.floor(loopBegin) % 60).toString()).slice(-2)}</button>
-                                <button onClick={() => setLoopEnd(videoRef.current.currentTime)}>{Math.floor(Math.floor(loopEnd) / 60).toString()}:{("00" + (Math.floor(loopEnd) % 60).toString()).slice(-2)}</button>
+                                <button onClick={() => setLoopBegin(videoRef.current!.currentTime)}>{Math.floor(Math.floor(loopBegin) / 60).toString()}:{("00" + (Math.floor(loopBegin) % 60).toString()).slice(-2)}</button>
+                                <button onClick={() => setLoopEnd(videoRef.current!.currentTime)}>{Math.floor(Math.floor(loopEnd) / 60).toString()}:{("00" + (Math.floor(loopEnd) % 60).toString()).slice(-2)}</button>
                                 <button onClick={addThumb}>add thumb</button>
                                 <label className="load"><input type="file" accept="image/*" onChange={loadThumb} />load thumb</label>
                                 {media.thumbs.map((thumb, i) => <button key={i} onClick={() => removeThumb(i)}><img style={{height:"50px"}} src={thumb} /></button>)}
@@ -202,7 +205,7 @@ export default function Details(props) {
                     </div>
                 </div>
             </div>,
-            document.getElementById("window")
+            document.getElementById("window")!
         )
     )
 }

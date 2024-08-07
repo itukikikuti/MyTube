@@ -1,18 +1,18 @@
 export default function ChangeTitleDialog() {
-    const onClickOverlay = e => {
-        if (e.currentTarget === e.target) {
-            //props.onClose()
-        }
-    }
+    // const onClickOverlay = e => {
+    //     if (e.currentTarget === e.target) {
+    //         //props.onClose()
+    //     }
+    // }
 
     const overlay = document.createElement("div")
     overlay.className = "overlay"
     overlay.onclick = e => {
         if (e.currentTarget === e.target) {
-            document.getElementById("window").removeChild(overlay)
+            document.getElementById("window")?.removeChild(overlay)
         }
     }
-    document.getElementById("window").appendChild(overlay)
+    document.getElementById("window")?.appendChild(overlay)
 
     const details = document.createElement("div")
     details.className = "details"
@@ -21,6 +21,6 @@ export default function ChangeTitleDialog() {
     const button = document.createElement("button")
     button.className = "close"
     button.textContent = "×"
-    button.onclick = () => document.getElementById("window").removeChild(overlay)
+    button.onclick = () => document.getElementById("window")?.removeChild(overlay)
     details.appendChild(button)
 }

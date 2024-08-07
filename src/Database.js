@@ -1,13 +1,17 @@
 import fs from "fs"
 import NEDB from "nedb"
+import Media from "./Media"
+import History from "./History"
 
-class Database {
-    constructor(path) {
+class Database<T> {
+    nedb: NEDB<T>
+
+    constructor(path: string) {
         this.nedb = new NEDB({ filename: path })
         this.nedb.loadDatabase()
     }
 
-    has(query) {
+    has(query: any): Promise<boolean> {
         return new Promise((resolve, reject) => {
             this.nedb.count(query, (error, count) => {
                 if (error !== null) {
@@ -24,7 +28,7 @@ class Database {
         })
     }
 
-    count(query) {
+    count(query: any): Promise<number> {
         return new Promise((resolve, reject) => {
             this.nedb.count(query, (error, count) => {
                 if (error !== null) {
@@ -37,9 +41,9 @@ class Database {
         })
     }
 
-    find(query) {
+    find(query: any): Promise<T[]> {
         return new Promise((resolve, reject) => {
-            this.nedb.find(query, (error, documents) => {
+            this.nedb.find(query, (error: any, documents: T[]) => {
                 if (error !== null) {
                     reject(error)
                     return
@@ -50,21 +54,21 @@ class Database {
         })
     }
 
-    update(query, document) {
+    update(query: any, document: T) {
         this.nedb.update(query, document)
     }
 
-    add(document) {
+    add(document: T) {
         this.nedb.insert(document)
     }
 
-    remove(document) {
-        this.nedb.remove(document)
+    remove(query: any) {
+        this.nedb.remove(query)
     }
 }
 
 const path = fs.readFileSync("./config.dat");
 
-export const mediaDB = new Database(`${path}/data/media.db`)
-export const tagDB = new Database(`${path}/data/tag.db`)
-export const historyDB = new Database(`${path}/data/history.db`)
+export const mediaDB = new Database<Media>(`${path}/data/media.db`)
+export const tagDB = new Database<{ tag: string }>(`${path}/data/tag.db`)
+export const historyDB = new Database<History>(`${path}/data/history.db`)

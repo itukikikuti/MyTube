@@ -5,8 +5,11 @@ import { createStore } from "redux"
 import { Provider } from "react-redux"
 import { mediaDB, tagDB, historyDB } from "./Database"
 import List from "./List"
+import State from "./State"
+import Media from "./Media"
+import NEDB from "nedb"
 
-function reducer(state, action) {
+function reducer(state: any, action: any) {
     console.log(action)
 
     switch (action.type) {
@@ -22,7 +25,7 @@ function reducer(state, action) {
             
         case "updateMedia":
             mediaDB.update({ title: action.media.title }, action.media)
-            const i = state.medias.findIndex(media => media.title === action.media.title)
+            const i = state.medias.findIndex((media: Media) => media.title === action.media.title)
             state.medias[i] = action.media
             break
 
@@ -33,7 +36,7 @@ function reducer(state, action) {
 
         case "removeTag":
             tagDB.remove({ tag: action.tag })
-            state.tags = state.tags.filter(tag => tag.tag !== action.tag)
+            state.tags = state.tags.filter((tag: { tag: string }) => tag.tag !== action.tag)
             break
 
         case "addHistory":
@@ -71,14 +74,13 @@ async function init() {
     }
     */
 
-    const initialState = {
+    const initialState: State = {
         medias: await mediaDB.find({}),
         mediaList: [],
         tags: await tagDB.find({}),
         histories: await historyDB.find({}),
         current: null,
     }
-
 
     const store = createStore(reducer, initialState)
     ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById("root"))

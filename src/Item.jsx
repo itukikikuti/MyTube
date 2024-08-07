@@ -1,14 +1,16 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, MouseEvent } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import Details from "./Details"
+import Media from "./Media"
+import State from "./State"
 
-export default React.memo(function Item(props) {
+export default React.memo(function Item(props: any) {
     const [isPreview, setIsPreview] = useState(false)
     const [isDetails, setIsDetails] = useState(false)
     const [thumbIndex, setThumbIndex] = useState(0)
 
-    const media = useSelector(state => state.medias.find(media => media.title === props.title))
-    const historyCount = useSelector(state => state.histories.filter(history => history.title === props.title).length)
+    const media = useSelector<State, Media>(state => state.medias.find(media => media.title === props.title)!)
+    const historyCount = useSelector<State, number>(state => state.histories.filter(history => history.title === props.title).length)
 
     const dispatch = useDispatch()
     
@@ -23,7 +25,7 @@ export default React.memo(function Item(props) {
         return () => clearInterval(id)
     }, [])
 
-    const onMouseOver = e => {
+    const onMouseOver = (e: MouseEvent<HTMLDivElement>) => {
         e.currentTarget.focus({ preventScroll: true })
     }
 

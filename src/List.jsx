@@ -5,20 +5,21 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux"
 import Item from "./Item"
 import Media from "./Media"
 import History from "./History"
+import State from "./State"
 import ChangeTitleDialog from "./Dialog/ChangeTitleDialog"
 
-export default function List(props) {
+export default function List(props: any) {
     const [rateFlags, setRateFlags] = useState([0, 1, 2, 3, 4, 5])
     const [typeFlags, setTypeFlags] = useState(["video"])
-    const [tagFlags, setTagFlags] = useState([])
+    const [tagFlags, setTagFlags] = useState<{ flag: boolean, tag: string }[]>([])
     const [thumbFlags, setThumbFlags] = useState([false, false])
     const [sort, setSort] = useState("date")
     const [tagMode, setTagMode] = useState("filter")
 
-    const medias = useSelector(state => state.medias, shallowEqual)
-    const mediaList = useSelector(state => state.mediaList, shallowEqual)
-    const histories = useSelector(state => state.histories, shallowEqual)
-    const tags = useSelector(state => state.tags, shallowEqual)
+    const medias = useSelector<State, Media[]>(state => state.medias, shallowEqual)
+    const mediaList = useSelector<State, string[]>(state => state.mediaList, shallowEqual)
+    const histories = useSelector<State, History[]>(state => state.histories, shallowEqual)
+    const tags = useSelector<State, { tag: string }[]>(state => state.tags, shallowEqual)
 
     const dispatch = useDispatch()
 
@@ -103,7 +104,7 @@ export default function List(props) {
             return ignore
         })
 
-        const hash = {}
+        const hash:{ [key: string]: any } = {}
         switch  (sort)
         {
             case "date":
@@ -152,7 +153,7 @@ export default function List(props) {
         dispatch({ type: "sortMediaList", mediaList: _medias.map(media => media.title) })
     }
 
-    const setRateFlag = rate => {
+    const setRateFlag = (rate: number) => {
         if (rateFlags.includes(rate)) {
             setRateFlags(rateFlags.filter(item => item !== rate))
         } else {
@@ -160,7 +161,7 @@ export default function List(props) {
         }
     }
 
-    const setTypeFlag = type => {
+    const setTypeFlag = (type: string) => {
         if (typeFlags.includes(type)) {
             setTypeFlags(typeFlags.filter(item => item !== type))
         } else {
@@ -168,7 +169,7 @@ export default function List(props) {
         }
     }
 
-    const setTagFlag = tagFlag => {
+    const setTagFlag = (tagFlag: { flag: boolean, tag: string }) => {
         const i = tagFlags.indexOf(tagFlag)
 
         if (i < 0) throw "error"
@@ -178,7 +179,7 @@ export default function List(props) {
         setTagFlags(copy)
     }
 
-    const setThumbFlag = (i, flag) => {
+    const setThumbFlag = (i: number, flag: boolean) => {
         const copy = [...thumbFlags]
         copy[i] = flag
         setThumbFlags(copy)
@@ -190,7 +191,7 @@ export default function List(props) {
                 const tagFlag = tagFlags.find(tagFlag => tagFlag.tag === tag.tag)
                 return { ...tag, flag: tagFlag != null ? tagFlag.flag : false }
             })
-            .sort((a, b) => a.tag.codePointAt(0) - b.tag.codePointAt(0))
+            .sort((a, b) => (a.tag.codePointAt(0) ?? 0) - (b.tag.codePointAt(0) ?? 0))
 
         console.log(temp)
         setTagFlags(temp)
