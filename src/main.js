@@ -21,8 +21,6 @@ function createWindow() {
     // if (process.env.NODE_ENV === "development") {
         mainWindow.webContents.openDevTools()
     // }
-
-    Menu.setApplicationMenu(null)
 }
 
 app.whenReady().then(() => {
