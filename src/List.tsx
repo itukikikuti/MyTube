@@ -1,11 +1,10 @@
 import fs from "fs"
 import path from "path"
-import React, { useState, useEffect } from "react"
-import { useDispatch, useSelector, shallowEqual } from "react-redux"
+import React, { useState, useEffect, useContext } from "react"
+import State, { StateContext, StateDispatchContext } from "./State"
 import Item from "./Item"
 import Media from "./Media"
 import History from "./History"
-import State from "./State"
 import ChangeTitleDialog from "./Dialog/ChangeTitleDialog"
 
 export default function List(props: any) {
@@ -16,12 +15,13 @@ export default function List(props: any) {
     const [sort, setSort] = useState("date")
     const [tagMode, setTagMode] = useState("filter")
 
-    const medias = useSelector<State, Media[]>(state => state.medias, shallowEqual)
-    const mediaList = useSelector<State, string[]>(state => state.mediaList, shallowEqual)
-    const histories = useSelector<State, History[]>(state => state.histories, shallowEqual)
-    const tags = useSelector<State, { tag: string }[]>(state => state.tags, shallowEqual)
+    const state = useContext(StateContext)
+    const dispatch = useContext(StateDispatchContext)
 
-    const dispatch = useDispatch()
+    const medias = state.medias
+    const mediaList = state.mediaList
+    const histories = state.histories
+    const tags = state.tags
 
     useEffect(() => { load() }, []) // 空の配列を指定すると一回だけ実行される
 

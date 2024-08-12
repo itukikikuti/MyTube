@@ -1,11 +1,9 @@
 import fs from "fs"
-import React from "react"
+import React, { useReducer } from "react"
 import { createRoot } from "react-dom/client"
-import { createStore } from "redux"
-import { Provider } from "react-redux"
 import { mediaDB, tagDB, historyDB } from "./Database"
+import State, { StateContext, StateDispatchContext } from "./State"
 import List from "./List"
-import State from "./State"
 import Media from "./Media"
 
 function reducer(state: any, action: any) {
@@ -50,10 +48,17 @@ function reducer(state: any, action: any) {
     return { ...state }
 }
 
-function App() {
-    const path = fs.readFileSync("./config.dat");
+function App({ initialState }) {
+    const [state, dispatch] = useReducer(reducer, initialState)
+    const path = fs.readFileSync("./config.dat")
 
-    return <List path={path} />
+    return (
+        <StateContext.Provider value={state}>
+            <StateDispatchContext.Provider value={dispatch}>
+                <List path={path} />
+            </StateDispatchContext.Provider>
+        </StateContext.Provider>
+    )
 }
 
 async function init() {
@@ -65,9 +70,8 @@ async function init() {
         current: null,
     }
 
-    const store = createStore(reducer, initialState)
     const root = createRoot(document.getElementById("root"))
-    root.render(<Provider store={store}><App /></Provider>)
+    root.render(<App initialState={initialState} />)
 }
 
 init()

@@ -1,3 +1,4 @@
+import { createContext } from "react"
 import History from "./History"
 import Media from "./Media"
 
@@ -9,3 +10,6 @@ export default interface State
     histories: History[]
     current: string | null
 }
+
+export const StateContext = createContext<State>(null)
+export const StateDispatchContext = createContext(null)

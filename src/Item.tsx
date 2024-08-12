@@ -1,19 +1,18 @@
-import React, { useState, useEffect, MouseEvent } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import React, { useState, useEffect, MouseEvent, useContext } from "react"
+import { StateContext, StateDispatchContext } from "./State"
 import Details from "./Details"
-import Media from "./Media"
-import State from "./State"
 
 export default React.memo(function Item(props: any) {
     const [isPreview, setIsPreview] = useState(false)
     const [isDetails, setIsDetails] = useState(false)
     const [thumbIndex, setThumbIndex] = useState(0)
 
-    const media = useSelector<State, Media>(state => state.medias.find(media => media.title === props.title)!)
-    const historyCount = useSelector<State, number>(state => state.histories.filter(history => history.title === props.title).length)
+    const state = useContext(StateContext)
+    const dispatch = useContext(StateDispatchContext)
 
-    const dispatch = useDispatch()
-    
+    const media = state.medias.find(media => media.title === props.title)
+    const historyCount = state.histories.filter(history => history.title === props.title).length
+
     useEffect(() => {
         const id = setInterval(() => {
             setThumbIndex(i => {

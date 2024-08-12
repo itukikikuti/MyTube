@@ -1,10 +1,8 @@
 import { exec } from "child_process"
-import React, { useState, useEffect, useRef, useCallback, MouseEvent, ChangeEvent } from "react"
+import React, { useState, useEffect, useRef, useCallback, MouseEvent, ChangeEvent, useContext } from "react"
 import ReactDOM from "react-dom"
-import { useDispatch, useSelector } from "react-redux"
+import { StateContext, StateDispatchContext } from "./State"
 import History from "./History"
-import State from "./State"
-import Media from "./Media"
 
 export default function Details(props: any) {
     const [loopBegin, setLoopBegin] = useState(0)
@@ -14,11 +12,12 @@ export default function Details(props: any) {
     const videoRef = useRef<HTMLVideoElement>()
     const setVideoRef = useCallback((node: HTMLVideoElement) => videoRef.current = node, [])
 
-    const medias = useSelector<State, Media[]>(state => state.medias)
-    const media = useSelector<State, Media>(state => state.medias.find((media: any) => media.title === props.title)!)
-    const tags = useSelector<State, { tag: string }[]>(state => state.tags)
+    const state = useContext(StateContext)
+    const dispatch = useContext(StateDispatchContext)
 
-    const dispatch = useDispatch()
+    const medias = state.medias
+    const media = state.medias.find((media: any) => media.title === props.title)
+    const tags = state.tags
 
     const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
