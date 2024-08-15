@@ -4,9 +4,8 @@ import { createRoot } from "react-dom/client"
 import { mediaDB, tagDB, historyDB } from "./Database"
 import State, { StateContext, StateDispatchContext } from "./State"
 import List from "./List"
-import Media from "./Media"
 
-function reducer(state: any, action: any) {
+function reducer(state: State, action: any): State {
     console.log(action)
 
     switch (action.type) {
@@ -22,7 +21,7 @@ function reducer(state: any, action: any) {
             
         case "updateMedia":
             mediaDB.update({ title: action.media.title }, action.media)
-            const i = state.medias.findIndex((media: Media) => media.title === action.media.title)
+            const i = state.medias.findIndex(m => m.title === action.media.title)
             state.medias[i] = action.media
             break
 
@@ -33,7 +32,7 @@ function reducer(state: any, action: any) {
 
         case "removeTag":
             tagDB.remove({ tag: action.tag })
-            state.tags = state.tags.filter((tag: { tag: string }) => tag.tag !== action.tag)
+            state.tags = state.tags.filter(t => t.tag !== action.tag)
             break
 
         case "addHistory":
@@ -48,14 +47,14 @@ function reducer(state: any, action: any) {
     return { ...state }
 }
 
-function App({ initialState }) {
-    const [state, dispatch] = useReducer(reducer, initialState)
+function App(props: { initialState: State }) {
+    const [state, dispatch] = useReducer(reducer, props.initialState)
     const path = fs.readFileSync("./config.dat")
 
     return (
         <StateContext.Provider value={state}>
             <StateDispatchContext.Provider value={dispatch}>
-                <List path={path} />
+                <List path={path.toString()} />
             </StateDispatchContext.Provider>
         </StateContext.Provider>
     )

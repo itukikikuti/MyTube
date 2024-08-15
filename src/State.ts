@@ -1,4 +1,4 @@
-import { createContext } from "react"
+import React, { createContext } from "react"
 import History from "./History"
 import Media from "./Media"
 
@@ -12,4 +12,4 @@ export default interface State
 }
 
 export const StateContext = createContext<State>(null)
-export const StateDispatchContext = createContext(null)
+export const StateDispatchContext = createContext<React.Dispatch<any>>(null)

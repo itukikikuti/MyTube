@@ -4,7 +4,7 @@ import ReactDOM from "react-dom"
 import { StateContext, StateDispatchContext } from "./State"
 import History from "./History"
 
-export default function Details(props: any) {
+export default function Details(props: { title: string, onClose: () => void }) {
     const [loopBegin, setLoopBegin] = useState(0)
     const [loopEnd, setLoopEnd] = useState(0)
     const [inputTag, setInputTag] = useState("")
@@ -16,7 +16,7 @@ export default function Details(props: any) {
     const dispatch = useContext(StateDispatchContext)
 
     const medias = state.medias
-    const media = state.medias.find((media: any) => media.title === props.title)
+    const media = state.medias.find(m => m.title === props.title)
     const tags = state.tags
 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -129,7 +129,7 @@ export default function Details(props: any) {
             temp.tags = [...temp.tags, inputTag]
             dispatch({ type: "updateMedia", media: temp })
     
-            if (tags.find(tag => tag.tag === inputTag) == null) {
+            if (tags.find(t => t.tag === inputTag) == null) {
                 dispatch({ type: "addTag", tag: inputTag })
             }
         }
@@ -143,7 +143,7 @@ export default function Details(props: any) {
         temp.tags = temp.tags.filter(t => t !== tag)
         dispatch({ type: "updateMedia", media: temp })
 
-        if (medias.filter(media => media.tags.includes(tag)).length === 0) {
+        if (medias.filter(m => m.tags.includes(tag)).length === 0) {
             dispatch({ type: "removeTag", tag: tag })
         }
     }

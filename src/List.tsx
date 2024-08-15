@@ -1,13 +1,13 @@
 import fs from "fs"
 import path from "path"
 import React, { useState, useEffect, useContext } from "react"
-import State, { StateContext, StateDispatchContext } from "./State"
+import { StateContext, StateDispatchContext } from "./State"
 import Item from "./Item"
 import Media from "./Media"
 import History from "./History"
 import ChangeTitleDialog from "./Dialog/ChangeTitleDialog"
 
-export default function List(props: any) {
+export default function List(props: { path: string }) {
     const [rateFlags, setRateFlags] = useState([0, 1, 2, 3, 4, 5])
     const [typeFlags, setTypeFlags] = useState(["video"])
     const [tagFlags, setTagFlags] = useState<{ flag: boolean, tag: string }[]>([])
@@ -33,7 +33,7 @@ export default function List(props: any) {
         const videoElement = document.createElement("video")
 
         for (const title of queue) {
-            if (medias.filter(media => media.title === title).length > 0) {
+            if (medias.filter(m => m.title === title).length > 0) {
                 continue
             }
 
@@ -70,7 +70,7 @@ export default function List(props: any) {
     const filter = () => {
         const findRates = rateFlags
         const findTypes = typeFlags
-        const findTags = tagFlags.filter(flag => flag.flag).map(flag => flag.tag)
+        const findTags = tagFlags.filter(tagFlag => tagFlag.flag).map(tagFlag => tagFlag.tag)
         const ignore = tagMode === "ignore"
 
         const _medias = medias.filter(media => {
@@ -149,7 +149,7 @@ export default function List(props: any) {
                 break
         }
 
-        dispatch({ type: "sortMediaList", mediaList: _medias.map(media => media.title) })
+        dispatch({ type: "sortMediaList", mediaList: _medias.map(m => m.title) })
     }
 
     const setRateFlag = (rate: number) => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect, MouseEvent, useContext } from "react"
 import { StateContext, StateDispatchContext } from "./State"
 import Details from "./Details"
 
-export default React.memo(function Item(props: any) {
+export default React.memo(function Item(props: { title: string }) {
     const [isPreview, setIsPreview] = useState(false)
     const [isDetails, setIsDetails] = useState(false)
     const [thumbIndex, setThumbIndex] = useState(0)
@@ -10,8 +10,8 @@ export default React.memo(function Item(props: any) {
     const state = useContext(StateContext)
     const dispatch = useContext(StateDispatchContext)
 
-    const media = state.medias.find(media => media.title === props.title)
-    const historyCount = state.histories.filter(history => history.title === props.title).length
+    const media = state.medias.find(m => m.title === props.title)
+    const historyCount = state.histories.filter(h => h.title === props.title).length
 
     useEffect(() => {
         const id = setInterval(() => {
